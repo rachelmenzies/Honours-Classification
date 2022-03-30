@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+
+
+  <title>Degree Classification Calculator - SSEN</title>
+
+  <!-- default CSS-->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!-- additional CSS-->
+  <!--<link rel="stylesheet" href="style.css">-->
+
+	<style>
+		#errors {
+			color: red;
+		}
+</style>
+</head>
+
+<body onload="onLoad()">
+<!--<body>-->
+
+<div class="row">
+
+  <div class="col-sm-1"></div>
+
+  <div class="col-sm-10">
+
+  <div class="jumbotron p-3">
+    <h1>Degree Classification Calculator</h1>
+  </div>
+
+
+	<!-- pre-amble -->
+  	<div class="alert alert-info">
+	  	<p>
+			<ul>
+				<li>If you have any queries about your grades or degree classification, you should contact your Advisor of Studies in the first instance.</li>
+				<li>To notify us about any errors in the calculator or to make feature requests, <a href="mailto:r.menzies@dundee.ac.uk">email Rachel Menzies</a> with more information.</li>
+			</ul>
+		</p>
+	</div>
+
+
+
+	<!--<p>The typical (non-covid) rules can be found at <a href="http://honours.computing.dundee.ac.uk/indexMain.html">honours.computing.dundee.ac.uk/indexMain.html</a>.</p>-->
+
+  <!-- Classification rules -->
+  <h2 class="p-3">Classification Rules</h2>
+  <div class="panel panel-default m-3">
+
+    <div class="panel-body">
+        <p>In summary, the classification is calculated as follows, which is based on the <a href="https://www.dundee.ac.uk/governance/policies/policy-taught-provision/">University of Dundee Assessment Policy</a>.
+					It is assumed that you have taken all required modules to be awarded your degree.
+          <ul>
+            <li>The overall average for a 4-year BSc (Hons) degree is calculated based on the ratio of 40% from level 3 and 60% from level 4. </li>
+            <li>The overall average for a 5-year MEng degree is calculated based on the ratio of 15% from level 3, 42.5% from level 4 and 42.5% from level 5.</li>
+            <li>The overall average for a 5-year MSci/MMath degree is calculated based on the ratio of 30% from level 3, 30% from level 4 and 40% from level 5.</li>
+            <li>The average is rounded up to a whole number, e.g. an average of 18.5 will be rounded up to 19 and awarded a first class degree.</li>
+            <li>Where the overall average is borderline (one grade below the boundary, i.e. B1, C1, D1) then the preponderance of
+            grades is considered. If at least 50% of credits are graded at the higher classification then the higher classification is awarded, e.g. an average of B1 with 130 credits at A-grade will be awarded a first class degree.</li>
+          </ul>
+        </p>
+
+        <p><b>This calculator has a number of limitations:</b>
+          <ul>
+            <!--<li>This predicted classification does not include any grade adjustments as a result of the work placement module. You may increase one module grade (excluding the project) by one grade up to the grade of work placement.
+              This can adjust your overall average or module grade proportions. For example, with a work placement grade of B3, you may increase a module up to that grade, i.e. C3 -> B3, C2 -> B2 etc.
+              This will be applied during the exam board on an individual basis.</li>-->
+              <li>It assumes you have taken a full credit load at the University of Dundee.</li>
+              <li>Mitigating circumstances will be considered on a case-by-case basis by the exam board as recommended by the mitigating circumstances committee.</li>
+              <li>The exam board has discretion when awarding degrees. This allows for, e.g. adjustment based on difficulties within one specific module, or awarding a degree where an individual has fail grade(s). All exam board considerations are anonymous.</li>
+          </ul>
+        </p>
+
+    </div> <!-- end panel-body -->
+	</div> <!-- end panel-default -->
+
+
+  <!-- INPUT PANEL -->
+  <h2 class="p-3">Calculator Input</h2>
+
+	<!-- PART 0 -->
+  <div class="panel panel-default m-3" id="part_0">
+    <div class="panel-body">
+			 <p>Select your degree type.</p>
+			 <form class="form-horizontal" id="degreeType">
+ 				<div class="form-group">
+         	<label class="control-label col-sm-2" for="yrs_deg">What type of undergraduate degree are you taking?</label>
+           <div class="col-sm-10">
+ 						<input type="radio"  name="yrs_deg" id="4yr" value="4" required> <label for="4yr">4-year Honours Degree </label> |
+ 						<input type="radio" name="yrs_deg" id="5yra" value="5" required> <label for="5yra">5-year Degree (MEng) </label> |
+						<input type="radio" name="yrs_deg" id="5yrb" value="5" required> <label for="5yrb">5-year Degree (MSci/MMath) </label>
+ 					</div>
+         </div>
+ 			</form>
+ 			<div class="form-group">
+ 				<div class="col-sm-offset-2 col-sm-10"><button type="submit" class="btn btn-primary" onclick="submitForm_part_0()">Select Degree Type</button></div>
+ 			</div>
+
+		</div>
+	</div>
+
+	<!-- PART 1 -->
+  <div class="panel panel-default m-3" id="part_1">
+    <div class="panel-body">
+
+		    <p>Enter your details below by adding the relevant number of modules.</p>
+				<div id="part1_content">
+				<form class="form-horizontal" id="initialInput">
+					<div class="form-group">
+		      	<label class="control-label col-sm-2" for="l3m1">How many modules did you take in level 3?</label>
+		        <div class="col-sm-10"><input type="number" class="form-control" id="num_modules_3" value="" required></div>
+		      </div>
+					<div class="form-group">
+		      	<label class="control-label col-sm-2" for="l4m1">How many modules did you take in level 4?</label>
+		        <div class="col-sm-10"><input type="number" class="form-control" id="num_modules_4" value="" required></div>
+		      </div>
+					<div id="part1_content_b">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="l5m1">How many modules did you take in level 5?</label>
+							<div class="col-sm-10"><input type="number" class="form-control" id="num_modules_5" value="" required></div>
+						</div>
+					</div>
+				</form>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10"><button type="submit" class="btn btn-primary" onclick="submitForm_part_1()">Add Modules Details</button></div>
+				</div>
+			</div> <!-- end part 1 div -->
+		</div>
+	</div>
+
+
+
+
+	<!-- PART 2 -->
+	<div class="panel panel-default m-3" id="part_2">
+    <div class="panel-body">
+      <p>Enter your details below by adding your grades and modules. <br>Ensure that you have 120 credits in each year.</p>
+
+			<form class="form-horizontal" id="secondInput">
+				<!-- INSERT FORM ITEMS HERE-->
+				<div id="second_input_form">
+					<div id="second_input"></div>
+
+					</form>
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10"><button type="submit" class="btn btn-primary" onclick="submitForm_part_2()">Add Grades</button></div>
+					</div>
+
+			</div>
+
+		</div>
+	</div>
+
+
+
+  <!-- RESULTS PANEL -->
+  <h2 class="p-3">Results</h2>
+  <div class="panel panel-default m-3">
+
+    <div class="panel-body">
+        <p>Note that each individual case is discussed at the exam board and so this should not be considered your final grade until you are notified via evision.
+				If you have not taken 120 credits of study in each year (e.g. you spent time on an exchange programme), you should ignore this classifier and speak to your Advisor of Studies.</p>
+
+				<!-- section for errors, e.g. not enough credits -->
+        <p id="errors"></p>
+
+        <!-- sections for numerical averages -->
+        <p id="final_grade"></p>
+        <p id="byAverage"></p>
+        <p id="byProportion"></p>
+
+    </div> <!-- end panel-body -->
+	</div> <!-- end panel-default -->
+
+</div> <!-- end middle column -->
+
+
+  <div class="col-sm-1"></div>
+</div> <!-- end row -->
+
+
+
+
+<!--  .......... FUNCTIONS ........... -->
+
+<script type="text/javascript">
+
+// INITIAL VISIBILITY
+
+
+// GLOBAL VARIABLES
+var part2_visible=2;
+var x = 0;
+var y = 0;
+var z = 0;
+var bsc = false;
+var msci = false;
+var meng = false;
+var yrs = 0;
+var deg = 0		// use for "meng" or "msci" when calculating proportional average
+
+var values = ["-", "A1", "A2", "A3", "A4", "A5","B1", "B2", "B3", "C1", "C2", "C3", "D1", "D2", "D3", "M1", "M2", "M3", "CF", "BF", "AB"];
+var numeric = ["", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "13", "12", "11", "10", "9", "8", "7", "5", "2", "0"];
+
+values2 = ["-", "5", "10", "15", "20", "30", "40", "45", "60", "120"];
+numeric2 = ["", "5", "10", "15", "20", "30", "40", "45", "60", "120"];
+
+
+function onLoad(){
+	//part2_visible = 0;
+	console.log("loaded");
+	document.getElementById("part1_content").style.display = 'none';
+	document.getElementById("part1_content_b").style.display = 'none';
+	document.getElementById("second_input_form").innerHTML = "";
+	//console.log(document.getElementById("part1_content").visible);
+}
+
+//
+// set up degree type
+//
+function submitForm_part_0() {
+	console.log("---");
+
+	document.getElementById("second_input_form").innerHTML = "";
+
+	// get value.... 4 for bsc, 5 for others
+	var bsc = document.getElementById("4yr").checked;
+	var meng = document.getElementById("5yra").checked;
+	var msci = document.getElementById("5yrb").checked;
+	console.log("bsc " + bsc);
+	console.log("meng " + meng);
+	console.log("Msci " + msci);
+
+	if(meng==true){deg = "meng";}
+	else if(msci==true){deg = "msci";}
+	else {deg="bsc"};
+
+
+
+	if(bsc==false && meng==false && msci==false){	// if nothing selected do nothing
+		console.log("none_selected")
+	}
+	else{
+		document.getElementById("part1_content").style.display = 'block';
+		if(bsc==true){
+			document.getElementById("part1_content_b").style.display = 'none';
+			yrs=4;
+		}
+		else{
+			document.getElementById("part1_content_b").style.display = 'block';
+			yrs=5;
+
+		}
+
+	}
+
+}
+
+
+
+//
+// create the form for credits and grades
+//
+function submitForm_part_1() {
+
+	// hide the level dropdown boxes
+	// prevents doing 5 then 4 and still seeing 5
+	document.getElementById("part1_content").style.display = 'none';
+
+	// rest content of the module lists
+	document.getElementById("second_input_form").innerHTML = "";
+
+	//var bsc = document.getElementById("4yr").checked;
+	//var msc = document.getElementById("5yr").checked;
+
+	x = document.getElementById("num_modules_3").value;
+	y = document.getElementById("num_modules_4").value;
+	setUp(3,x);
+	setUp(4,y);
+
+	if(yrs==5){
+		z = document.getElementById("num_modules_5").value;
+		setUp(5,z);
+		//Alert.show("set up 5 modules");
+	}
+
+
+// add button
+var html_to_insert = '<div class="form-group"><div class="col-sm-offset-2 col-sm-10"><button type="button" class="btn btn-primary" onclick="submitForm_part_2()">Add Grades</button></div></div>';
+document.getElementById('second_input_form').insertAdjacentHTML('beforeend', html_to_insert);
+
+
+	//part2_visible = 1;
+	document.getElementById("part1_content").style.display = 'block';
+}
+
+
+//
+// create the form for credits and grades
+//
+function submitForm_part_2() {
+
+	document.getElementById("errors").innerHTML = "";
+
+	// store total credits at each grade point
+	A_grade = 0;
+	B_grade = 0;
+	C_grade = 0;
+	D_grade = 0;
+	F_grade = 0;
+
+	// credits per year
+	var total_3_credits = 0;
+	var total_4_credits = 0;
+	var total_5_credits = 0;
+
+	// grades per year
+	var total_3_grades = 0;
+	var total_4_grades = 0;
+	var total_5_grades = 0;
+
+	// count for moving through submissions - x is level 3, y is level 4, z is level 5
+	x = x-1;
+	y = y-1;
+	z = z-1;
+
+	// temp for moving input to arrays for level 3 and level 4
+	var a;
+
+	// input level 3 to one array
+  var level_3 = [];
+	if(x>=0){a={grade:parseInt(numeric[grades_3_0.selectedIndex],10), credit:parseInt(numeric2[credits_3_0.selectedIndex],10)}; level_3.push(a);}
+	if(x>=1){a={grade:parseInt(numeric[grades_3_1.selectedIndex],10), credit:parseInt(numeric2[credits_3_1.selectedIndex],10)}; level_3.push(a);}
+	if(x>=2){a={grade:parseInt(numeric[grades_3_2.selectedIndex],10), credit:parseInt(numeric2[credits_3_2.selectedIndex],10)}; level_3.push(a);}
+	if(x>=3){a={grade:parseInt(numeric[grades_3_3.selectedIndex],10), credit:parseInt(numeric2[credits_3_3.selectedIndex],10)}; level_3.push(a);}
+	if(x>=4){a={grade:parseInt(numeric[grades_3_4.selectedIndex],10), credit:parseInt(numeric2[credits_3_4.selectedIndex],10)}; level_3.push(a);}
+	if(x>=5){a={grade:parseInt(numeric[grades_3_5.selectedIndex],10), credit:parseInt(numeric2[credits_3_5.selectedIndex],10)}; level_3.push(a);}
+	if(x>=6){a={grade:parseInt(numeric[grades_3_6.selectedIndex],10), credit:parseInt(numeric2[credits_3_6.selectedIndex],10)}; level_3.push(a);}
+	if(x>=7){a={grade:parseInt(numeric[grades_3_7.selectedIndex],10), credit:parseInt(numeric2[credits_3_7.selectedIndex],10)}; level_3.push(a);}
+	if(x>=8){a={grade:parseInt(numeric[grades_3_8.selectedIndex],10), credit:parseInt(numeric2[credits_3_8.selectedIndex],10)}; level_3.push(a);}
+	if(x>=9){a={grade:parseInt(numeric[grades_3_9.selectedIndex],10), credit:parseInt(numeric2[credits_3_9.selectedIndex],10)}; level_3.push(a);}
+	if(x>=10){a={grade:parseInt(numeric[grades_3_10.selectedIndex],10), credit:parseInt(numeric2[credits_3_10.selectedIndex],10)}; level_3.push(a);}
+	if(x>=11){a={grade:parseInt(numeric[grades_3_11.selectedIndex],10), credit:parseInt(numeric2[credits_3_11.selectedIndex],10)}; level_3.push(a);}
+
+	// input level 4 to one array
+	var level_4 = [];
+	if(y>=0){a={grade:parseInt(numeric[grades_4_0.selectedIndex],10), credit:parseInt(numeric2[credits_4_0.selectedIndex],10)}; level_4.push(a);}
+	if(y>=1){a={grade:parseInt(numeric[grades_4_1.selectedIndex],10), credit:parseInt(numeric2[credits_4_1.selectedIndex],10)}; level_4.push(a);}
+	if(y>=2){a={grade:parseInt(numeric[grades_4_2.selectedIndex],10), credit:parseInt(numeric2[credits_4_2.selectedIndex],10)}; level_4.push(a);}
+	if(y>=3){a={grade:parseInt(numeric[grades_4_3.selectedIndex],10), credit:parseInt(numeric2[credits_4_3.selectedIndex],10)}; level_4.push(a);}
+	if(y>=4){a={grade:parseInt(numeric[grades_4_4.selectedIndex],10), credit:parseInt(numeric2[credits_4_4.selectedIndex],10)}; level_4.push(a);}
+	if(y>=5){a={grade:parseInt(numeric[grades_4_5.selectedIndex],10), credit:parseInt(numeric2[credits_4_5.selectedIndex],10)}; level_4.push(a);}
+	if(y>=6){a={grade:parseInt(numeric[grades_4_6.selectedIndex],10), credit:parseInt(numeric2[credits_4_6.selectedIndex],10)}; level_4.push(a);}
+	if(y>=7){a={grade:parseInt(numeric[grades_4_7.selectedIndex],10), credit:parseInt(numeric2[credits_4_7.selectedIndex],10)}; level_4.push(a);}
+	if(y>=8){a={grade:parseInt(numeric[grades_4_8.selectedIndex],10), credit:parseInt(numeric2[credits_4_8.selectedIndex],10)}; level_4.push(a);}
+	if(y>=9){a={grade:parseInt(numeric[grades_4_9.selectedIndex],10), credit:parseInt(numeric2[credits_4_9.selectedIndex],10)}; level_4.push(a);}
+	if(y>=10){a={grade:parseInt(numeric[grades_4_10.selectedIndex],10), credit:parseInt(numeric2[credits_4_10.selectedIndex],10)}; level_4.push(a);}
+	if(y>=11){a={grade:parseInt(numeric[grades_4_11.selectedIndex],10), credit:parseInt(numeric2[credits_4_11.selectedIndex],10)}; level_4.push(a);}
+
+  // go through the array for level 3
+	for(var j=0; j<level_3.length; j++){
+		// add up credits at each grade
+		if(level_3[j].grade>=19){A_grade+=level_3[j].credit;}
+		else if(level_3[j].grade>=16){B_grade+=level_3[j].credit;}
+		else if(level_3[j].grade>=13){C_grade+=level_3[j].credit;}
+		else if(level_3[j].grade>=10){D_grade+=level_3[j].credit;}
+		else {F_grade+=level_3[j].credit;}
+		// rolling total for level 3
+		total_3_credits += level_3[j].credit;
+	}
+	// loop again as total credits needed from previous loop
+	for(var j=0; j<level_3.length; j++){
+		total_3_grades += (level_3[j].grade * (level_3[j].credit/total_3_credits));
+	}
+
+	// go through the array for level 3
+	for(var j=0; j<level_4.length; j++){
+		// add up credits at each grade
+		if(level_4[j].grade>=19){A_grade+=level_4[j].credit;}
+		else if(level_4[j].grade>=16){B_grade+=level_4[j].credit;}
+		else if(level_4[j].grade>=13){C_grade+=level_4[j].credit;}
+		else if(level_4[j].grade>=10){D_grade+=level_4[j].credit;}
+		else {F_grade+=level_4[j].credit;}
+		// rolling total for level 4
+		total_4_credits += level_4[j].credit;
+		//total_4_grades += level_4[j].grade;
+	}
+	// loop again as total credits needed from previous loop
+	for(var j=0; j<level_4.length; j++){
+		total_4_grades += (level_4[j].grade * (level_4[j].credit/total_4_credits));
+	}
+
+	if(yrs==5){
+		// input level 5 to one array
+	  var level_5 = [];
+		if(z>=0){a={grade:parseInt(numeric[grades_5_0.selectedIndex],10), credit:parseInt(numeric2[credits_5_0.selectedIndex],10)}; level_5.push(a);}
+		if(z>=1){a={grade:parseInt(numeric[grades_5_1.selectedIndex],10), credit:parseInt(numeric2[credits_5_1.selectedIndex],10)}; level_5.push(a);}
+		if(z>=2){a={grade:parseInt(numeric[grades_5_2.selectedIndex],10), credit:parseInt(numeric2[credits_5_2.selectedIndex],10)}; level_5.push(a);}
+		if(z>=3){a={grade:parseInt(numeric[grades_5_3.selectedIndex],10), credit:parseInt(numeric2[credits_5_3.selectedIndex],10)}; level_5.push(a);}
+		if(z>=4){a={grade:parseInt(numeric[grades_5_4.selectedIndex],10), credit:parseInt(numeric2[credits_5_4.selectedIndex],10)}; level_5.push(a);}
+		if(z>=5){a={grade:parseInt(numeric[grades_5_5.selectedIndex],10), credit:parseInt(numeric2[credits_5_5.selectedIndex],10)}; level_5.push(a);}
+		if(z>=6){a={grade:parseInt(numeric[grades_5_6.selectedIndex],10), credit:parseInt(numeric2[credits_5_6.selectedIndex],10)}; level_5.push(a);}
+		if(z>=7){a={grade:parseInt(numeric[grades_5_7.selectedIndex],10), credit:parseInt(numeric2[credits_5_7.selectedIndex],10)}; level_5.push(a);}
+		if(z>=8){a={grade:parseInt(numeric[grades_5_8.selectedIndex],10), credit:parseInt(numeric2[credits_5_8.selectedIndex],10)}; level_5.push(a);}
+		if(z>=9){a={grade:parseInt(numeric[grades_5_9.selectedIndex],10), credit:parseInt(numeric2[credits_5_9.selectedIndex],10)}; level_5.push(a);}
+		if(z>=10){a={grade:parseInt(numeric[grades_5_10.selectedIndex],10), credit:parseInt(numeric2[credits_5_10.selectedIndex],10)}; level_5.push(a);}
+		if(z>=11){a={grade:parseInt(numeric[grades_5_11.selectedIndex],10), credit:parseInt(numeric2[credits_5_11.selectedIndex],10)}; level_5.push(a);}
+
+		// go through the array for level 3
+		for(var j=0; j<level_5.length; j++){
+			// add up credits at each grade
+			if(level_5[j].grade>=19){A_grade+=level_5[j].credit;}
+			else if(level_5[j].grade>=16){B_grade+=level_5[j].credit;}
+			else if(level_5[j].grade>=13){C_grade+=level_5[j].credit;}
+			else if(level_5[j].grade>=10){D_grade+=level_5[j].credit;}
+			else {F_grade+=level_5[j].credit;}
+			// rolling total for level 4
+			total_5_credits += level_5[j].credit;
+			//total_4_grades += level_4[j].grade;
+		}
+		// loop again as total credits needed from previous loop
+		for(var j=0; j<level_5.length; j++){
+			total_5_grades += (level_5[j].grade * (level_5[j].credit/total_5_credits));
+		}
+	}
+
+	// calculate total average based on each year total
+	if(deg=="meng"){
+		var total_average = total_3_grades*0.15 + total_4_grades*0.425 + total_5_grades*0.425;
+		//console.log("calculate as MEng");
+	}
+	else if(deg=="msci"){
+		var total_average = total_3_grades*0.3 + total_4_grades*0.3 + total_5_grades*0.4;
+		//console.log("calculate as MSci");
+	}
+	else{
+		var total_average = total_3_grades*0.4 + total_4_grades*0.6;
+		//console.log("calculate as BSc");
+	}
+
+  console.log(total_average);
+
+	// the degree classification number that can be used later to convert to a textual representation
+	var degreeClassification = checkDegreeFromAverage(total_average);
+
+  //
+  // CHECK FOR ERRORS
+  //
+
+	// use this to trigger error messages
+	isError=false;
+
+	// check grades have been entered
+	var gradesEntered = total_average;
+	if (isNaN(gradesEntered)){gradesEntered = 0; isError=true;}
+
+  //
+	// DISPLAY OUTCOME FOR 4 YEAR DEGREES
+  // EITHER BY AVERAGE ONLY OR INCUDING PREPONDERANCE
+  //
+
+	// check for credit values and display either error or result
+	if (yrs==4){
+		var credits = total_3_credits + total_4_credits;
+		if (isNaN(credits)){credits = 0; isError=true;}
+		if(credits != 240){isError=true;}
+    if(F_grade >0){isError=true;}
+		//console.log("credits "+credits);
+
+		if(isError){
+			// clear div so that any previous calculation is cleared
+			document.getElementById("byAverage").innerHTML = "";
+      // not the correct amount of credits
+			if(credits != 240){
+				document.getElementById("errors").insertAdjacentHTML('beforeend', "<p><b>You do not have the expected number of credits."
+					+ "</br> You have " + credits + " credits, but you should have 240.</b></p>");
+			}
+      // missing grades
+			if(gradesEntered == 0){
+				document.getElementById("errors").insertAdjacentHTML('beforeend', "<p><b>You have not entered grades for one or more modules.</b></p>");
+			}
+      // if any credits are allocated to Fail grade
+			if(F_grade > 0){
+				document.getElementById("errors").insertAdjacentHTML('beforeend', "<p><b>One or more of your modules has a fail grade which means you are not automatically awarded an honours degree. Your case will be considered by the Board of Examiners.</b></p>");
+			}
+
+		}
+
+		// else no error
+		else{
+      console.log("Printing final outcome 4-yr degree....");
+
+      document.getElementById("errors").innerHTML = "";
+      document.getElementById("byAverage").innerHTML = "";
+      document.getElementById("byProportion").innerHTML = "";
+
+			document.getElementById("final_grade").innerHTML = "<p>Your level 3 average is: " + getAN(Math.round(total_3_grades))  + " from " + total_3_credits + " credits."
+			+ "</br> Your level 4 average is: " + getAN(Math.round(total_4_grades)) + " from " + total_4_credits + " credits."
+			+ "<br> <b>Your overall average is: " + getAN(Math.round(total_average)) + " from " + (total_3_credits+total_4_credits) + " credits.</b>"
+			+ "<br> Note that the overall average is based on level 3 and level 4 grades without rounding these values.</p>";
+
+      var average = false;
+      var proportion = false;
+
+      // A by average
+      if(total_average>=18.5){
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // A-B preponderance
+      else if(total_average>=18 && total_average<18.5){
+        if(A_grade>=120){degreeClassification = degreeClassification-1;}
+        document.getElementById("byProportion").innerHTML = "<b>Your average is borderline. Based on your weighted-average grade and your proportion of credits at A and above, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // B by average
+      else if(total_average>=15.5){
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // B-C preponderance
+      else if(total_average>=15 && total_average<15.5){
+        if(B_grade>=120){degreeClassification = degreeClassification-1;}
+        document.getElementById("byProportion").innerHTML = "<b>Your average is borderline. Based on your weighted-average grade and your proportion of credits at B and above, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // C by average
+      else if(total_average>=12.5){
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // C-D preponderance
+      else if(total_average>=12 && total_average<12.5){
+        if(C_grade>=120){degreeClassification = degreeClassification-1;}
+        document.getElementById("byProportion").innerHTML = "<b>Your average is borderline. Based on your weighted-average grade and your proportion of credits at C and above, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // D by average
+      else if(total_average>=9.5){
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // D-Fail preponderance
+      else if(total_average>=9 && total_average<9.5){
+        if(D_grade>=120){degreeClassification = degreeClassification-1;}
+        document.getElementById("byProportion").innerHTML = "<b>Your average is borderline. Based on your weighted-average grade and your proportion of credits at D and above, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      else{
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+
+
+
+		}
+	}
+
+  //
+  // DISPLAY OUTCOME FOR 5 YEAR DEGREES
+  //
+
+	// check for credit values and display either error or result
+	if (yrs==5){
+		var credits = total_3_credits + total_4_credits + total_5_credits;
+		if (isNaN(credits)){credits = 0; isError=true;}
+		if(credits != 360){isError=true;}
+    if(F_grade >0){isError=true;}
+
+		if(isError){
+			document.getElementById("byAverage").innerHTML = "";
+			if(credits != 360){
+				document.getElementById("errors").insertAdjacentHTML('beforeend', "<p><b>You do not have the expected number of credits."
+					+ "</br> You have " + credits + " credits, but you should have 360.</b></p>");
+			}
+			if(gradesEntered == 0){
+				document.getElementById("errors").insertAdjacentHTML('beforeend', "<p><b>You have not entered grades for one or more modules.</b></p>");
+			}
+      // if any credits are allocated to Fail grade
+			if(F_grade > 0){
+				document.getElementById("errors").insertAdjacentHTML('beforeend', "<p><b>One or more of your modules has a fail grade which means you are not automatically awarded an honours degree. Your case will be considered by the Board of Examiners.</b></p>");
+			}
+		}
+
+		// else no error
+    else{
+      console.log("Printing final outcome 5-yr degree....");
+
+      document.getElementById("errors").innerHTML = "";
+      document.getElementById("byAverage").innerHTML = "";
+      document.getElementById("byProportion").innerHTML = "";
+
+      document.getElementById("final_grade").innerHTML = "<p>Your level 3 average is: " + getAN(Math.round(total_3_grades))  + " from " + total_3_credits + " credits."
+      + "</br> Your level 4 average is: " + getAN(Math.round(total_4_grades)) + " from " + total_4_credits + " credits."
+      + "</br> Your level 5 average is: " + getAN(Math.round(total_5_grades)) + " from " + total_5_credits + " credits."
+      + "<br> <b>Your overall average is: " + getAN(Math.round(total_average)) + " from " + (total_3_credits+total_4_credits+level_5_credits) + " credits.</b>"
+      + "<br> Note that the overall average is based on level 3, level 4 and level 5 grades without rounding these values.</p>";
+
+      var average = false;
+      var proportion = false;
+
+      // A by average
+      if(total_average>=18.5){
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // A-B preponderance
+      else if(total_average>=18 && total_average<18.5){
+        if(A_grade>=120){degreeClassification = degreeClassification-1;}
+        document.getElementById("byProportion").innerHTML = "<b>Your average is borderline. Based on your weighted-average grade and your proportion of credits at A and above, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // B by average
+      else if(total_average>=15.5){
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // B-C preponderance
+      else if(total_average>=15 && total_average<15.5){
+        if(B_grade>=120){degreeClassification = degreeClassification-1;}
+        document.getElementById("byProportion").innerHTML = "<b>Your average is borderline. Based on your weighted-average grade and your proportion of credits at B and above, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // C by average
+      else if(total_average>=12.5){
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // C-D preponderance
+      else if(total_average>=12 && total_average<12.5){
+        if(C_grade>=120){degreeClassification = degreeClassification-1;}
+        document.getElementById("byProportion").innerHTML = "<b>Your average is borderline. Based on your weighted-average grade and your proportion of credits at C and above, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // D by average
+      else if(total_average>=9.5){
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      // D-Fail preponderance
+      else if(total_average>=9 && total_average<9.5){
+        if(D_grade>=120){degreeClassification = degreeClassification-1;}
+        document.getElementById("byProportion").innerHTML = "<b>Your average is borderline. Based on your weighted-average grade and your proportion of credits at D and above, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+      else{
+        document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
+      }
+
+
+
+    }
+
+  }
+
+
+  // display outcomes
+  console.log("total_average rounded: " + Math.round(total_average));
+  console.log("Total average as AN: " + getAN(Math.round(total_average)));
+
+
+
+
+	// reset for next time page is loaded
+	x=x+1;
+	y=y+1;
+	z=z+1;
+
+}
+
+function checkDegreeFromAverage(final_average){
+
+	 // 1 = 1st class
+    // 2 = 2:1
+    // 3 = 2:2
+    // 4 = 3rd
+    // 5 = ordinary
+
+    var temp_calc;
+    if(final_average>=18.5){temp_calc = 1;}
+    else if(final_average>=15.5){temp_calc = 2;}
+    else if(final_average>=12.5){temp_calc = 3;}
+    else if(final_average>=9.5){temp_calc = 4;}
+    else{temp_calc = 5;}
+
+    return temp_calc;
+}
+
+//
+// CONVERT GRADE TO NUMBER
+//
+function getAggregateScore(val){
+	var temp= 0;
+
+	if(val=="A1" || val=="a1"){temp = 23;}
+	if(val=="A2" || val=="a2"){temp = 22;}
+	if(val=="A3" || val=="a3"){temp = 21;}
+	if(val=="A4" || val=="a4"){temp = 20;}
+	if(val=="A5" || val=="a5"){temp = 19;}
+	if(val=="B1" || val=="b1"){temp = 18;}
+	if(val=="B2" || val=="b2"){temp = 17;}
+	if(val=="B3" || val=="b3"){temp = 16;}
+	if(val=="C1" || val=="c1"){temp = 15;}
+	if(val=="C2" || val=="c2"){temp = 14;}
+	if(val=="C3" || val=="c3"){temp = 13;}
+	if(val=="D1" || val=="d1"){temp = 12;}
+	if(val=="D2" || val=="d2"){temp = 11;}
+	if(val=="D3" || val=="d3"){temp = 10;}
+	if(val=="MF1" || val=="mf1" || val=="M1" || val=="m1"){temp = 9;}
+	if(val=="MF2" || val=="mf2" || val=="M2" || val=="m2"){temp = 8;}
+	if(val=="MF3" || val=="mf3" || val=="M3" || val=="m3"){temp = 7;}
+	if(val=="CF" || val=="cf"){temp = 5;}
+	if(val=="BF" || val=="bf"){temp = 2;}
+	if(val=="AB" || val=="ab"){temp = 0;}
+
+	return temp;
+
+}
+
+//
+// change temp calc (the degree classification) from int to text
+//
+
+function getDegreeClassification(v){
+	var temp= 0;
+	//var v = parseInt(val);
+
+	if(v==1){temp = "First Class";}
+	else if(v==2){temp = "Upper Second Class / 2:1";}
+	else if(v==3){temp = "Lower Second Class / 2:2";}
+	else if(v==4){temp = "Third Class";}
+	else {temp = "Ordinary (non-honours)";}
+
+	console.log("val is " + v);
+	console.log("returning this: " +  temp);
+	return temp;
+
+}
+
+
+//
+// change aggregate to alphanumeric score
+//
+
+function getAN(val){
+	var temp= 0;
+	if(val==23){temp = "A1";}
+	if(val==22){temp = "A2";}
+	if(val==21){temp = "A3";}
+	if(val==20){temp = "A4";}
+	if(val==19){temp = "A5";}
+	if(val==18){temp = "B1";}
+	if(val==17){temp = "B2";}
+	if(val==16){temp = "B3";}
+	if(val==15){temp = "C1";}
+	if(val==14){temp = "C2";}
+	if(val==13){temp = "C3";}
+	if(val==12){temp = "D1";}
+	if(val==11){temp = "D2";}
+	if(val==10){temp = "D3";}
+	if(val==9){temp = "MF1";}
+	if(val==8){temp = "MF2";}
+	if(val==7){temp = "MF3";}
+	if(val==5){temp = "CF";}
+	if(val==2){temp = "BF";}
+	if(val==0){temp = "AB";}
+	return temp;
+
+}
+
+//
+// SET UP FOR PART 2
+//
+function setUp(level,num){
+	var container = document.getElementById("second_input_form");
+
+	var heading = document.createElement("h3");
+	heading.innerHTML = "Level " + level + " Modules"
+	container.appendChild(heading);
+
+	// var p = document.createElement("p");
+	// p.innerHTML = "Ensure that you add modules worth 120 credits in total."
+	// container.appendChild(p);
+
+	// for each module reported
+	// ... left column div - label
+	// ... right column div - grades and credits
+	for(var i=0; i<num; i++){
+		var select = document.createElement("select");
+
+		//add the left column div
+		var newDivLeft = document.createElement("div");
+		newDivLeft.className = 'col-sm-2';
+		newDivLeft.appendChild(document.createTextNode("Module " + (i+1)));
+		//container.appendChild(newDivLeft);
+
+		// CREATE DROPDOWN MENU FOR GRADES
+		var select = document.createElement("select"); select.id = "grades_"+level+"_"+i;
+		select.setAttribute("required", "");
+		select.required = true;
+
+		for (const val of values) {
+			var option = document.createElement("option");
+			option.value = numeric;
+			option.text = val;
+			select.appendChild(option);
+		}
+
+		var label = document.createElement("label"); label.innerHTML = "Module Grade: "; label.htmlFor = "grades";
+
+		// create right div
+		var newDivRight = document.createElement("div");
+		newDivRight.className = 'col-sm-10';
+
+		// create a paragraph and apprend onto the div
+		var p = document.createElement("P");
+		newDivRight.appendChild(p);
+
+		// add the dropdown menus to the p
+		p.appendChild(label).appendChild(select);
+		p.appendChild(document.createTextNode("..."));
+
+		// CREATE DROPDOWN MENU FOR CREDITS
+		select = document.createElement("select"); select.id = "credits_"+level+"_"+i;
+		//select.required = true;
+
+		for (const val of values2) {
+			var option = document.createElement("option");
+			option.value = numeric2;
+			option.text = val;
+			select.appendChild(option);
+		}
+
+		var label = document.createElement("label"); label.innerHTML = "Credits: "; label.htmlFor = "credits";
+
+		p.appendChild(label).appendChild(select);
+
+		var div = document.createElement("div");
+		div.id = x;
+		div.appendChild(newDivLeft);
+		div.appendChild(newDivRight);
+		container. appendChild(div);
+
+	}
+
+}
+
+
+
+</script>
+
+</body>
+</html>
