@@ -215,38 +215,31 @@ var numeric = ["", "23", "22", "21", "20", "19", "18", "17", "16", "15", "14", "
 values2 = ["-", "5", "10", "15", "20", "30", "40", "45", "60", "120"];
 numeric2 = ["", "5", "10", "15", "20", "30", "40", "45", "60", "120"];
 
-
+//
+// on loading page, clear the form content
+//
 function onLoad(){
-	//part2_visible = 0;
-	console.log("loaded");
 	document.getElementById("part1_content").style.display = 'none';
 	document.getElementById("part1_content_b").style.display = 'none';
 	document.getElementById("second_input_form").innerHTML = "";
-	//console.log(document.getElementById("part1_content").visible);
 }
 
 //
 // set up degree type
 //
 function submitForm_part_0() {
-	console.log("---");
-
 	document.getElementById("second_input_form").innerHTML = "";
 
-	// get value.... 4 for bsc, 5 for others
+  // get value.... 4 for bsc, 5 for others
 	var bsc = document.getElementById("4yr").checked;
 	var meng = document.getElementById("5yra").checked;
 	var msci = document.getElementById("5yrb").checked;
-	console.log("bsc " + bsc);
-	console.log("meng " + meng);
-	console.log("Msci " + msci);
 
-	if(meng==true){deg = "meng";}
-	else if(msci==true){deg = "msci";}
-	else {deg="bsc"};
+	if(meng==true){deg = "meng"; console.log("meng ");}
+	else if(msci==true){deg = "msci"; console.log("Msci ");}
+	else {deg="bsc"; console.log("bsc ");}
 
-
-
+  // display the correct parts of the form for length of degree selected
 	if(bsc==false && meng==false && msci==false){	// if nothing selected do nothing
 		console.log("none_selected")
 	}
@@ -259,9 +252,7 @@ function submitForm_part_0() {
 		else{
 			document.getElementById("part1_content_b").style.display = 'block';
 			yrs=5;
-
 		}
-
 	}
 
 }
@@ -280,9 +271,6 @@ function submitForm_part_1() {
 	// rest content of the module lists
 	document.getElementById("second_input_form").innerHTML = "";
 
-	//var bsc = document.getElementById("4yr").checked;
-	//var msc = document.getElementById("5yr").checked;
-
 	x = document.getElementById("num_modules_3").value;
 	y = document.getElementById("num_modules_4").value;
 	setUp(3,x);
@@ -291,17 +279,13 @@ function submitForm_part_1() {
 	if(yrs==5){
 		z = document.getElementById("num_modules_5").value;
 		setUp(5,z);
-		//Alert.show("set up 5 modules");
 	}
 
 
-// add button
-var html_to_insert = '<div class="form-group"><div class="col-sm-offset-2 col-sm-10"><button type="button" class="btn btn-primary" onclick="submitForm_part_2()">Add Grades</button></div></div>';
-document.getElementById('second_input_form').insertAdjacentHTML('beforeend', html_to_insert);
-
-
-	//part2_visible = 1;
-	document.getElementById("part1_content").style.display = 'block';
+  // add button
+  var html_to_insert = '<div class="form-group"><div class="col-sm-offset-2 col-sm-10"><button type="button" class="btn btn-primary" onclick="submitForm_part_2()">Add Grades</button></div></div>';
+  document.getElementById('second_input_form').insertAdjacentHTML('beforeend', html_to_insert);
+  document.getElementById("part1_content").style.display = 'block';
 }
 
 
@@ -393,13 +377,13 @@ function submitForm_part_2() {
 		else {F_grade+=level_4[j].credit;}
 		// rolling total for level 4
 		total_4_credits += level_4[j].credit;
-		//total_4_grades += level_4[j].grade;
 	}
 	// loop again as total credits needed from previous loop
 	for(var j=0; j<level_4.length; j++){
 		total_4_grades += (level_4[j].grade * (level_4[j].credit/total_4_credits));
 	}
 
+  // only go through level 5 array if needed
 	if(yrs==5){
 		// input level 5 to one array
 	  var level_5 = [];
@@ -426,29 +410,22 @@ function submitForm_part_2() {
 			else {F_grade+=level_5[j].credit;}
 			// rolling total for level 4
 			total_5_credits += level_5[j].credit;
-			//total_4_grades += level_4[j].grade;
 		}
 		// loop again as total credits needed from previous loop
 		for(var j=0; j<level_5.length; j++){
 			total_5_grades += (level_5[j].grade * (level_5[j].credit/total_5_credits));
 		}
-	}
+	}  // END YEAR 5 SECTION
 
-	// calculate total average based on each year total
-	if(deg=="meng"){
-		var total_average = total_3_grades*0.15 + total_4_grades*0.425 + total_5_grades*0.425;
-		//console.log("calculate as MEng");
-	}
-	else if(deg=="msci"){
-		var total_average = total_3_grades*0.3 + total_4_grades*0.3 + total_5_grades*0.4;
-		//console.log("calculate as MSci");
-	}
-	else{
-		var total_average = total_3_grades*0.4 + total_4_grades*0.6;
-		//console.log("calculate as BSc");
-	}
 
-  console.log(total_average);
+  //
+	// CACLULATE AVERAGE BASED ON THE TOTAL AVERAGE FOR EACH YEAR
+  //
+
+	if(deg=="meng"){var total_average = total_3_grades*0.15 + total_4_grades*0.425 + total_5_grades*0.425;}
+	else if(deg=="msci"){var total_average = total_3_grades*0.3 + total_4_grades*0.3 + total_5_grades*0.4;}
+	else{var total_average = total_3_grades*0.4 + total_4_grades*0.6;}
+  console.log("Average: " + total_average);
 
 	// the degree classification number that can be used later to convert to a textual representation
 	var degreeClassification = checkDegreeFromAverage(total_average);
@@ -461,6 +438,7 @@ function submitForm_part_2() {
 	isError=false;
 
 	// check grades have been entered
+  // total_average would be zero if no grades entered
 	var gradesEntered = total_average;
 	if (isNaN(gradesEntered)){gradesEntered = 0; isError=true;}
 
@@ -512,6 +490,9 @@ function submitForm_part_2() {
       var average = false;
       var proportion = false;
 
+      // Use pre-rounded values
+      // 18.5 is rounded to 19 and becomes A5 -> First Class
+
       // A by average
       if(total_average>=18.5){
         document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
@@ -552,9 +533,8 @@ function submitForm_part_2() {
         document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
       }
 
+		} // end else
 
-
-		}
 	}
 
   //
@@ -562,6 +542,8 @@ function submitForm_part_2() {
   //
 
 	// check for credit values and display either error or result
+  // same process as level 4 with addition of displaying level 5 average and 240 credits become 360 credits needed
+  // TO DO: TIDY UP TO AVOID REPETITION
 	if (yrs==5){
 		var credits = total_3_credits + total_4_credits + total_5_credits;
 		if (isNaN(credits)){credits = 0; isError=true;}
@@ -640,30 +622,22 @@ function submitForm_part_2() {
         document.getElementById("byAverage").innerHTML = "<b>Based on your weighted-average grade, your degree classification is: " + getDegreeClassification(parseInt(degreeClassification)) + "</b>";
       }
 
-
-
-    }
+    } // end else
 
   }
 
 
-  // display outcomes
-  console.log("total_average rounded: " + Math.round(total_average));
-  console.log("Total average as AN: " + getAN(Math.round(total_average)));
-
-
-
 
 	// reset for next time page is loaded
-	x=x+1;
-	y=y+1;
-	z=z+1;
+	x=x+1; // level 3
+	y=y+1; // level 4
+	z=z+1; // level 5
 
 }
 
 function checkDegreeFromAverage(final_average){
 
-	 // 1 = 1st class
+	  // 1 = 1st class
     // 2 = 2:1
     // 3 = 2:2
     // 4 = 3rd
