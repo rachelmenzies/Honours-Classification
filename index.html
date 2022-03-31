@@ -4,6 +4,14 @@
 <html>
 <head>
 
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H5K1Y3JYZM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H5K1Y3JYZM');
+  </script>
 
   <title>Degree Classification Calculator - SSEN</title>
 
@@ -39,7 +47,7 @@
   </div>
 
 
-	<!-- pre-amble -->
+	 <!-- pre-amble -->
   	<div class="alert alert-info">
 	  	<p>
 			<ul>
@@ -48,6 +56,19 @@
 			</ul>
 		</p>
 	</div>
+
+
+  <!-- COVID NO DETRIMENT -->
+  <div class="alert alert-danger">
+    <p>
+      We know that students will have been impacted by the COVID-19 pandemic in all sorts of different ways.
+      In light of the significant, combined, impact of these factors the University will be taking
+      a ‘no detriment’ approach when confirming grades and degree outcomes.
+    </p>
+    <p>
+      Please refer to the <a href="https://www.dundee.ac.uk/guides/no-detriment-what-does-it-mean">No Detriment Policy</a> for more detail.
+  </p>
+  </div>
 
 
 
@@ -66,17 +87,18 @@
             <li>The overall average for a 5-year MSci/MMath degree is calculated based on the ratio of 30% from level 3, 30% from level 4 and 40% from level 5.</li>
             <li>The average is rounded up to a whole number, e.g. an average of 18.5 will be rounded up to 19 and awarded a first class degree.</li>
             <li>Where the overall average is borderline (one grade below the boundary, i.e. B1, C1, D1) then the preponderance of
-            grades is considered. If at least 50% of credits are graded at the higher classification then the higher classification is awarded, e.g. an average of B1 with 130 credits at A-grade will be awarded a first class degree.</li>
+            grades is considered. If at least 50% of credits are graded at the higher classification then the higher classification is awarded,
+            e.g. a BSc (Hons) degree with an average of B1 with 130 credits (of a possible 240) at A5 or above will be awarded a first class degree.</li>
           </ul>
         </p>
 
-        <p><b>This calculator has a number of limitations:</b>
+        <p><b>This calculator has a number of limitations:</b></p>
           <ul>
             <!--<li>This predicted classification does not include any grade adjustments as a result of the work placement module. You may increase one module grade (excluding the project) by one grade up to the grade of work placement.
               This can adjust your overall average or module grade proportions. For example, with a work placement grade of B3, you may increase a module up to that grade, i.e. C3 -> B3, C2 -> B2 etc.
               This will be applied during the exam board on an individual basis.</li>-->
               <li>It assumes you have taken a full credit load at the University of Dundee.</li>
-              <li>Mitigating circumstances will be considered on a case-by-case basis by the exam board as recommended by the mitigating circumstances committee.</li>
+              <li>Mitigating circumstances will be considered on a case-by-case basis by the Mitigating Circumstances Committee and may result in grade changes.</li>
               <li>The exam board has discretion when awarding degrees. This allows for, e.g. adjustment based on difficulties within one specific module, or awarding a degree where an individual has fail grade(s). All exam board considerations are anonymous.</li>
           </ul>
         </p>
@@ -96,8 +118,8 @@
  				<div class="form-group">
          	<label class="control-label col-sm-2" for="yrs_deg">What type of undergraduate degree are you taking?</label>
            <div class="col-sm-10">
- 						<input type="radio"  name="yrs_deg" id="4yr" value="4" required> <label for="4yr">4-year Honours Degree </label> |
- 						<input type="radio" name="yrs_deg" id="5yra" value="5" required> <label for="5yra">5-year Degree (MEng) </label> |
+ 						<input type="radio"  name="yrs_deg" id="4yr" value="4" required> <label for="4yr">4-year Honours Degree </label><br>
+ 						<input type="radio" name="yrs_deg" id="5yra" value="5" required> <label for="5yra">5-year Degree (MEng) </label><br>
 						<input type="radio" name="yrs_deg" id="5yrb" value="5" required> <label for="5yrb">5-year Degree (MSci/MMath) </label>
  					</div>
          </div>
