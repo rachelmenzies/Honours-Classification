@@ -40,7 +40,7 @@
 
   <div class="col-sm-1"></div>
 
-  
+
   <div class="col-sm-10">
 
   <div class="jumbotron p-3">
@@ -599,7 +599,7 @@ function submitForm_part_2() {
       document.getElementById("final_grade").innerHTML = "<p>Your level 3 average is: " + getAN(Math.round(total_3_grades))  + " from " + total_3_credits + " credits."
       + "</br> Your level 4 average is: " + getAN(Math.round(total_4_grades)) + " from " + total_4_credits + " credits."
       + "</br> Your level 5 average is: " + getAN(Math.round(total_5_grades)) + " from " + total_5_credits + " credits."
-      + "<br> <b>Your overall average is: " + getAN(Math.round(total_average)) + " from " + (total_3_credits+total_4_credits+level_5_credits) + " credits.</b>"
+      + "<br> <b>Your overall average is: " + getAN(Math.round(total_average)) + " from " + (total_3_credits+total_4_credits+total_5_credits) + " credits.</b>"
       + "<br> Note that the overall average is based on level 3, level 4 and level 5 grades without rounding these values.</p>";
 
       var average = false;
