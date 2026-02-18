@@ -315,7 +315,7 @@ function submitForm_part_1() {
 //
 // create the form for credits and grades
 //
-	function submitForm_part_2() {
+function submitForm_part_2() {
 
 	document.getElementById("errors").innerHTML = "";
 
@@ -331,28 +331,48 @@ function submitForm_part_1() {
 	var total_4_credits = 0;
 	var total_5_credits = 0;
 
-		// grades per year
-		var total_3_grades = 0;
-		var total_4_grades = 0;
-		var total_5_grades = 0;
+	// grades per year
+	var total_3_grades = 0;
+	var total_4_grades = 0;
+	var total_5_grades = 0;
 
-		function getLevelEntries(level, count){
-			var entries = [];
-			for(var i=0; i<count; i++){
-				var gradeSelect = document.getElementById("grades_" + level + "_" + i);
-				var creditSelect = document.getElementById("credits_" + level + "_" + i);
-				if(!gradeSelect || !creditSelect){continue;}
-				entries.push({
-					grade: parseInt(numeric[gradeSelect.selectedIndex],10),
-					credit: parseInt(numeric2[creditSelect.selectedIndex],10)
-				});
-			}
-			return entries;
-		}
+	// count for moving through submissions - x is level 3, y is level 4, z is level 5
+	x = x-1;
+	y = y-1;
+	z = z-1;
 
-		// input each level to one array
-	  var level_3 = getLevelEntries(3, parseInt(x,10) || 0);
-		var level_4 = getLevelEntries(4, parseInt(y,10) || 0);
+	// temp for moving input to arrays for level 3 and level 4
+	var a;
+
+	// input level 3 to one array
+  var level_3 = [];
+	if(x>=0){a={grade:parseInt(numeric[grades_3_0.selectedIndex],10), credit:parseInt(numeric2[credits_3_0.selectedIndex],10)}; level_3.push(a);}
+	if(x>=1){a={grade:parseInt(numeric[grades_3_1.selectedIndex],10), credit:parseInt(numeric2[credits_3_1.selectedIndex],10)}; level_3.push(a);}
+	if(x>=2){a={grade:parseInt(numeric[grades_3_2.selectedIndex],10), credit:parseInt(numeric2[credits_3_2.selectedIndex],10)}; level_3.push(a);}
+	if(x>=3){a={grade:parseInt(numeric[grades_3_3.selectedIndex],10), credit:parseInt(numeric2[credits_3_3.selectedIndex],10)}; level_3.push(a);}
+	if(x>=4){a={grade:parseInt(numeric[grades_3_4.selectedIndex],10), credit:parseInt(numeric2[credits_3_4.selectedIndex],10)}; level_3.push(a);}
+	if(x>=5){a={grade:parseInt(numeric[grades_3_5.selectedIndex],10), credit:parseInt(numeric2[credits_3_5.selectedIndex],10)}; level_3.push(a);}
+	if(x>=6){a={grade:parseInt(numeric[grades_3_6.selectedIndex],10), credit:parseInt(numeric2[credits_3_6.selectedIndex],10)}; level_3.push(a);}
+	if(x>=7){a={grade:parseInt(numeric[grades_3_7.selectedIndex],10), credit:parseInt(numeric2[credits_3_7.selectedIndex],10)}; level_3.push(a);}
+	if(x>=8){a={grade:parseInt(numeric[grades_3_8.selectedIndex],10), credit:parseInt(numeric2[credits_3_8.selectedIndex],10)}; level_3.push(a);}
+	if(x>=9){a={grade:parseInt(numeric[grades_3_9.selectedIndex],10), credit:parseInt(numeric2[credits_3_9.selectedIndex],10)}; level_3.push(a);}
+	if(x>=10){a={grade:parseInt(numeric[grades_3_10.selectedIndex],10), credit:parseInt(numeric2[credits_3_10.selectedIndex],10)}; level_3.push(a);}
+	if(x>=11){a={grade:parseInt(numeric[grades_3_11.selectedIndex],10), credit:parseInt(numeric2[credits_3_11.selectedIndex],10)}; level_3.push(a);}
+
+	// input level 4 to one array
+	var level_4 = [];
+	if(y>=0){a={grade:parseInt(numeric[grades_4_0.selectedIndex],10), credit:parseInt(numeric2[credits_4_0.selectedIndex],10)}; level_4.push(a);}
+	if(y>=1){a={grade:parseInt(numeric[grades_4_1.selectedIndex],10), credit:parseInt(numeric2[credits_4_1.selectedIndex],10)}; level_4.push(a);}
+	if(y>=2){a={grade:parseInt(numeric[grades_4_2.selectedIndex],10), credit:parseInt(numeric2[credits_4_2.selectedIndex],10)}; level_4.push(a);}
+	if(y>=3){a={grade:parseInt(numeric[grades_4_3.selectedIndex],10), credit:parseInt(numeric2[credits_4_3.selectedIndex],10)}; level_4.push(a);}
+	if(y>=4){a={grade:parseInt(numeric[grades_4_4.selectedIndex],10), credit:parseInt(numeric2[credits_4_4.selectedIndex],10)}; level_4.push(a);}
+	if(y>=5){a={grade:parseInt(numeric[grades_4_5.selectedIndex],10), credit:parseInt(numeric2[credits_4_5.selectedIndex],10)}; level_4.push(a);}
+	if(y>=6){a={grade:parseInt(numeric[grades_4_6.selectedIndex],10), credit:parseInt(numeric2[credits_4_6.selectedIndex],10)}; level_4.push(a);}
+	if(y>=7){a={grade:parseInt(numeric[grades_4_7.selectedIndex],10), credit:parseInt(numeric2[credits_4_7.selectedIndex],10)}; level_4.push(a);}
+	if(y>=8){a={grade:parseInt(numeric[grades_4_8.selectedIndex],10), credit:parseInt(numeric2[credits_4_8.selectedIndex],10)}; level_4.push(a);}
+	if(y>=9){a={grade:parseInt(numeric[grades_4_9.selectedIndex],10), credit:parseInt(numeric2[credits_4_9.selectedIndex],10)}; level_4.push(a);}
+	if(y>=10){a={grade:parseInt(numeric[grades_4_10.selectedIndex],10), credit:parseInt(numeric2[credits_4_10.selectedIndex],10)}; level_4.push(a);}
+	if(y>=11){a={grade:parseInt(numeric[grades_4_11.selectedIndex],10), credit:parseInt(numeric2[credits_4_11.selectedIndex],10)}; level_4.push(a);}
 
   // go through the array for level 3
 	for(var j=0; j<level_3.length; j++){
@@ -386,10 +406,22 @@ function submitForm_part_1() {
 		total_4_grades += (level_4[j].grade * (level_4[j].credit/total_4_credits));
 	}
 
-		// only go through level 5 array if needed
-		if(yrs==5){
-			// input level 5 to one array
-		  var level_5 = getLevelEntries(5, parseInt(z,10) || 0);
+  // only go through level 5 array if needed
+	if(yrs==5){
+		// input level 5 to one array
+	  var level_5 = [];
+		if(z>=0){a={grade:parseInt(numeric[grades_5_0.selectedIndex],10), credit:parseInt(numeric2[credits_5_0.selectedIndex],10)}; level_5.push(a);}
+		if(z>=1){a={grade:parseInt(numeric[grades_5_1.selectedIndex],10), credit:parseInt(numeric2[credits_5_1.selectedIndex],10)}; level_5.push(a);}
+		if(z>=2){a={grade:parseInt(numeric[grades_5_2.selectedIndex],10), credit:parseInt(numeric2[credits_5_2.selectedIndex],10)}; level_5.push(a);}
+		if(z>=3){a={grade:parseInt(numeric[grades_5_3.selectedIndex],10), credit:parseInt(numeric2[credits_5_3.selectedIndex],10)}; level_5.push(a);}
+		if(z>=4){a={grade:parseInt(numeric[grades_5_4.selectedIndex],10), credit:parseInt(numeric2[credits_5_4.selectedIndex],10)}; level_5.push(a);}
+		if(z>=5){a={grade:parseInt(numeric[grades_5_5.selectedIndex],10), credit:parseInt(numeric2[credits_5_5.selectedIndex],10)}; level_5.push(a);}
+		if(z>=6){a={grade:parseInt(numeric[grades_5_6.selectedIndex],10), credit:parseInt(numeric2[credits_5_6.selectedIndex],10)}; level_5.push(a);}
+		if(z>=7){a={grade:parseInt(numeric[grades_5_7.selectedIndex],10), credit:parseInt(numeric2[credits_5_7.selectedIndex],10)}; level_5.push(a);}
+		if(z>=8){a={grade:parseInt(numeric[grades_5_8.selectedIndex],10), credit:parseInt(numeric2[credits_5_8.selectedIndex],10)}; level_5.push(a);}
+		if(z>=9){a={grade:parseInt(numeric[grades_5_9.selectedIndex],10), credit:parseInt(numeric2[credits_5_9.selectedIndex],10)}; level_5.push(a);}
+		if(z>=10){a={grade:parseInt(numeric[grades_5_10.selectedIndex],10), credit:parseInt(numeric2[credits_5_10.selectedIndex],10)}; level_5.push(a);}
+		if(z>=11){a={grade:parseInt(numeric[grades_5_11.selectedIndex],10), credit:parseInt(numeric2[credits_5_11.selectedIndex],10)}; level_5.push(a);}
 
 		// go through the array for level 3
 		for(var j=0; j<level_5.length; j++){
@@ -618,7 +650,13 @@ function submitForm_part_1() {
   }
 
 
-	}
+
+	// reset for next time page is loaded
+	x=x+1; // level 3
+	y=y+1; // level 4
+	z=z+1; // level 5
+
+}
 
 function checkDegreeFromAverage(final_average){
 
