@@ -26,11 +26,36 @@
   <!-- additional CSS-->
   <!--<link rel="stylesheet" href="style.css">-->
 
-	<style>
-		#errors {
-			color: red;
-		}
-</style>
+		<style>
+			body {
+				padding-bottom: 56px;
+			}
+
+			#errors {
+				color: red;
+			}
+
+			#second_input_form select {
+				min-height: 38px;
+				font-size: 15px;
+				padding: 4px 8px;
+				margin-right: 8px;
+				width: auto;
+				min-width: 110px;
+			}
+
+			#second_input_form .module-row {
+				display: flex;
+				align-items: center;
+				margin-bottom: 8px;
+			}
+
+			#second_input_form .module-label {
+				display: flex;
+				align-items: center;
+				min-height: 38px;
+			}
+	</style>
 </head>
 
 <body onload="onLoad()">
@@ -742,7 +767,7 @@ function setUp(level,num){
 
 		//add the left column div
 		var newDivLeft = document.createElement("div");
-		newDivLeft.className = 'col-sm-2';
+			newDivLeft.className = 'col-sm-2 module-label';
 		newDivLeft.appendChild(document.createTextNode("Module " + (i+1)));
 		//container.appendChild(newDivLeft);
 
@@ -751,12 +776,12 @@ function setUp(level,num){
 		select.setAttribute("required", "");
 		select.required = true;
 
-		for (const val of values) {
-			var option = document.createElement("option");
-			option.value = numeric;
-			option.text = val;
-			select.appendChild(option);
-		}
+			for (const val of values) {
+				var option = document.createElement("option");
+				option.value = val;
+				option.text = val;
+				select.appendChild(option);
+			}
 
 		var label = document.createElement("label"); label.innerHTML = "Module Grade: "; label.htmlFor = "grades";
 
@@ -776,22 +801,22 @@ function setUp(level,num){
 		select = document.createElement("select"); select.id = "credits_"+level+"_"+i;
 		//select.required = true;
 
-		for (const val of values2) {
-			var option = document.createElement("option");
-			option.value = numeric2;
-			option.text = val;
-			select.appendChild(option);
-		}
+			for (const val of values2) {
+				var option = document.createElement("option");
+				option.value = val;
+				option.text = val;
+				select.appendChild(option);
+			}
 
 		var label = document.createElement("label"); label.innerHTML = "Credits: "; label.htmlFor = "credits";
 
-		p.appendChild(label).appendChild(select);
+			p.appendChild(label).appendChild(select);
 
-		var div = document.createElement("div");
-		div.id = x;
-		div.appendChild(newDivLeft);
-		div.appendChild(newDivRight);
-		container. appendChild(div);
+			var div = document.createElement("div");
+			div.className = 'module-row';
+			div.appendChild(newDivLeft);
+			div.appendChild(newDivRight);
+			container. appendChild(div);
 
 	}
 
